@@ -11,7 +11,7 @@ module.exports = {
 			const pxlsToken = req.cookies['pxls-token'];
 			if (pxlsToken === null && pxlsToken === undefined) return res.redirect(process.env.AUTH_COMPLETE);
 			const id = parseInt(pxlsToken.split('|')[0]);
-			let account = await database.getAccount(id);
+			let account = await database.getAccountByPxlsId(id);
 			if (account === null) {
 				const whoami = await axios.get(`https://${process.env.SITE}/whoami`, {
 					responseType: 'json',
@@ -48,7 +48,7 @@ module.exports = {
 			account.discord.username = user.data.username;
 			account.discord.avatar = user.data.avatar;
 			account.discord.discriminator = user.data.discriminator;
-			await database.setAccount(id, account);
+			await database.setAccountByPxlsId(id, account);
 			res.redirect(process.env.AUTH_COMPLETE);
 		}
 	},

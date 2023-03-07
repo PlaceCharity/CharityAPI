@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 module.exports = {
-	async getAccount(id) {
+	async getAccountByPxlsId(id) {
 		const mongo = new MongoClient(process.env.DB, {
 			useUnifiedTopology: true,
 		});
@@ -19,7 +19,7 @@ module.exports = {
 			await mongo.close();
 		}
 	},
-	async setAccount(id, setting) {
+	async setAccountByPxlsId(id, setting) {
 		const mongo = new MongoClient(process.env.DB, {
 			useUnifiedTopology: true,
 		});
@@ -50,6 +50,24 @@ module.exports = {
 				const result = await accounts.insertOne(info);
 				return result;
 			}
+		} finally {
+			await mongo.close();
+		}
+	},
+	async getAccountByDiscordId(id) {
+		const mongo = new MongoClient(process.env.DB, {
+			useUnifiedTopology: true,
+		});
+		try {
+			await mongo.connect();
+			const database = mongo.db('charity');
+			const accounts = database.collection('accounts');
+
+			const result = await accounts.findOne({
+				'discord.id': id,
+			});
+
+			return result;
 		} finally {
 			await mongo.close();
 		}

@@ -6,9 +6,9 @@ module.exports = {
 	type: 'get',
 	async execute(req, res) {
 		const token = req.cookies['pxls-token'];
-		if (token === null && token === undefined) return res.status(400);
+		if (token === null || token === undefined) return res.status(400).end();
 		const id = parseInt(token.split('|')[0]);
-		let account = await database.getAccount(id);
+		let account = await database.getAccountByPxlsId(id);
 		if (account === null) {
 			const whoami = await axios.get(`https://${process.env.SITE}/whoami`, {
 				responseType: 'json',
@@ -16,7 +16,7 @@ module.exports = {
 					Cookie: `pxls-token=${token};`,
 				},
 			});
-			await database.setAccount(id, { pxls: whoami.data });
+			await database.setAccountByPxlsId(id, { pxls: whoami.data });
 			account = {
 				pxls: whoami.data,
 			};
