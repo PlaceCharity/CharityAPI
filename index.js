@@ -7,6 +7,7 @@ const multer = require('multer');
 const upload = multer();
 const fs = require('fs');
 const pxls = require('./handlers/pxls');
+const place = require('./handlers/place');
 
 const app = express();
 
@@ -53,4 +54,5 @@ app.post('/api/:request', upload.single('image'), async (req, res) => {
 app.listen(1677, () => {
 	console.log('API listening on port 1677...');
 	pxls.init();
+	place.connect();
 });
