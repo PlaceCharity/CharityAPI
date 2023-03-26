@@ -64,7 +64,7 @@ module.exports = {
 		ws.on('close', () => {
 			clearTimeout(pingTimeout);
 			console.log('Websocket Disconnected.');
-			setTimeout(this.connect, 5000);
+			setTimeout(module.exports.connect, 5000);
 		});
 
 		ws.on('error', console.error);

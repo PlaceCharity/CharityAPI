@@ -46,6 +46,7 @@ app.post('/api/:request', upload.single('image'), async (req, res) => {
 		try {
 			await postRequests[req.params.request].execute(req, res);
 		} catch (e) {
+			console.error(e);
 			res.status(500).send(e);
 		}
 	}
