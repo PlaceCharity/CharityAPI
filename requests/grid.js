@@ -27,7 +27,9 @@ module.exports = {
 
 		if (sheets) {
 			const sheet = await grid.createSpreadsheet(offsetX, offsetY, inputWidth, inputHeight, input);
-			res.send(sheet);
+			res.send({
+				sheet: sheet,
+			});
 		} else {
 			const image = await grid.createImage(offsetX, offsetY, inputWidth, inputHeight, input);
 
